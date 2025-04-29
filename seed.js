@@ -90,7 +90,6 @@ const seed = async () => {
   console.log("Users created:");
   console.log(await fetchUsers());
 
-  // Create video game products
   const [
     zelda,
     spiderman,
@@ -168,12 +167,9 @@ const seed = async () => {
   console.log("Products created:");
   console.log(await fetchProducts());
 
-  // Close the client connection
   await client.end();
 };
 
-// Run the seed function
 seed().catch((error) => {
   console.error("Error seeding database:", error);
-  process.exit(1);
 });
