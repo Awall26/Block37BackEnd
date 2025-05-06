@@ -105,61 +105,61 @@ const seed = async () => {
     createProduct(
       "The Legend of Zelda: Tears of the Kingdom",
       "Embark on an epic adventure across the land and skies of Hyrule",
-      "https://placehold.co/400x600?text=Zelda:TOTK",
+      "https://www.gematsu.com/wp-content/uploads/2021/12/Game-Page-Box-Art_The-Legend-of-Zelda-Tears-of-the-Kingdom-Inits.jpg",
       69.99
     ),
     createProduct(
       "Marvel's Spider-Man 2",
       "Swing through New York City as Peter Parker and Miles Morales",
-      "https://placehold.co/400x600?text=Spider-Man2",
+      "https://preview.redd.it/official-cover-art-for-spider-man-2-out-october-20-v0-a5h4887tvu4b1.jpg?auto=webp&s=0c1c3dcd37e39d1e4e61a73e735cfc6d7e5fccec",
       69.99
     ),
     createProduct(
       "Final Fantasy XVI",
       "Experience an epic dark fantasy adventure in the world of Valisthea",
-      "https://placehold.co/400x600?text=FFXVI",
+      "https://i.redd.it/c5nkph1gajy91.jpg",
       69.99
     ),
     createProduct(
       "Starfield",
       "Bethesda's epic sci-fi RPG set among the stars",
-      "https://placehold.co/400x600?text=Starfield",
+      "https://bananaroad.com/cdn/shop/files/pst2792_Startfield_Video_Game_Poster_grande.jpg?v=1720812512",
       59.99
     ),
     createProduct(
       "Baldur's Gate 3",
       "Embark on a grand adventure in the Forgotten Realms",
-      "https://placehold.co/400x600?text=BG3",
+      "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/08/baldurs-gate-3-box-art.jpg",
       59.99
     ),
     createProduct(
       "Resident Evil 4 Remake",
       "Survive horror in this reimagining of the classic game",
-      "https://placehold.co/400x600?text=RE4",
+      "https://static1.srcdn.com/wordpress/wp-content/uploads/2023/02/re4-remake-poster.jpg",
       59.99
     ),
     createProduct(
       "God of War Ragnarök",
       "Continue Kratos and Atreus's epic journey through Norse mythology",
-      "https://placehold.co/400x600?text=GOW",
+      "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/12/mixcollage-08-dec-2024-01-22-pm-530.jpg",
       59.99
     ),
     createProduct(
       "Elden Ring",
       "Explore the Lands Between in this epic action RPG",
-      "https://placehold.co/400x600?text=EldenRing",
+      "https://c.clc2l.com/t/E/l/Elden-Ring-l9wZ8Q.jpg",
       59.99
     ),
     createProduct(
       "Cyberpunk 2077",
       "Experience the dark future in Night City",
-      "https://placehold.co/400x600?text=CP2077",
+      "https://1.bp.blogspot.com/-LNZ2u6TKpSw/X09MidLRalI/AAAAAAAAJhA/-uELhTb088EbIlCzSBaHvDm3_Y7bNKhIQCLcBGAsYHQ/s640/cyberpunk-2077-box-art-01-ps4-us-06jun19.jpg",
       59.99
     ),
     createProduct(
       "Super Mario Bros. Wonder",
       "Join Mario in a new side-scrolling adventure",
-      "https://placehold.co/400x600?text=MarioWonder",
+      "https://sm.ign.com/ign_ap/cover/s/super-mari/super-mario-bros-wonder_w91b.jpg",
       59.99
     ),
   ]);
