@@ -56,12 +56,10 @@ const authenticate = async ({ username, password }) => {
     !response.rows.length ||
     (await bcrypt.compare(password, response.rows[0].password)) === false
   ) {
-    const error = Error("not authorized");
-    error.status = 401;
-    throw error;
+    return null;
   }
   const token = await jwt.sign({ id: response.rows[0].id }, JWT);
-  return { token };
+  return { token, user_id: response.rows[0].id };
 };
 
 const findUserWithToken = async (token) => {
@@ -79,11 +77,10 @@ const signToken = async (user_id) => {
 
 const createUser = async (username, password, name, mailing_address) => {
   const SQL = `INSERT INTO users (id, username, password, name, mailing_address) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-  const hashedPassword = await bcrypt.hash(password, 10);
   const response = await client.query(SQL, [
     uuid.v4(),
     username,
-    hashedPassword,
+    await bcrypt.hash(password, 10),
     name,
     mailing_address,
   ]);

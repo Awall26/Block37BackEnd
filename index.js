@@ -58,6 +58,7 @@ server.listen(port, () => {
 
 const isLoggedIn = async (req, res, next) => {
   try {
+    console.log("*****", req.headers.authorization);
     req.user = await findUserWithToken(req.headers.authorization);
     next();
   } catch (error) {
@@ -94,7 +95,23 @@ server.post("/api/register", async (req, res, next) => {
 
 server.post("/api/login", async (req, res, next) => {
   try {
-    res.send(await authenticate({ username, password }));
+    const { username, password } = req.body;
+    if (!username || !password) {
+      next({
+        name: "MissingCredentialsError",
+        message: "Please supply both a username and password",
+      });
+      return;
+    }
+    const user = await authenticate({ username, password });
+    if (!user) {
+      next({
+        name: "AuthenticationError",
+        message: "Invalid username or password",
+      });
+      return;
+    }
+    res.send(user);
   } catch (error) {
     next(error);
   }
