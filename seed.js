@@ -30,61 +30,67 @@ const seed = async () => {
     user9,
     user10,
   ] = await Promise.all([
-    createUser("user1", "password123", "John Doe", "123 Main St, Anytown, USA"),
-    createUser(
-      "user2",
-      "password123",
-      "Jane Smith",
-      "456 Oak Ave, Somewhere, USA"
-    ),
-    createUser(
-      "user3",
-      "password123",
-      "Bob Johnson",
-      "789 Pine Rd, Nowhere, USA"
-    ),
-    createUser(
-      "user4",
-      "password123",
-      "Alice Williams",
-      "321 Elm St, Everywhere, USA"
-    ),
-    createUser(
-      "user5",
-      "password123",
-      "Charlie Brown",
-      "654 Maple Dr, Anywhere, USA"
-    ),
-    createUser(
-      "user6",
-      "password123",
-      "Diana Ross",
-      "987 Cedar Ln, Elsewhere, USA"
-    ),
-    createUser(
-      "user7",
-      "password123",
-      "Edward Davis",
-      "147 Birch Ct, Someplace, USA"
-    ),
-    createUser(
-      "user8",
-      "password123",
-      "Fiona Green",
-      "258 Willow Way, Otherplace, USA"
-    ),
-    createUser(
-      "user9",
-      "password123",
-      "George Wilson",
-      "369 Spruce St, Noplace, USA"
-    ),
-    createUser(
-      "user10",
-      "password123",
-      "Helen Taylor",
-      "741 Aspen Ave, Anyplace, USA"
-    ),
+    createUser({
+      username: "user1",
+      password: "password123",
+      name: "John Doe",
+      mailing_address: "123 Main St, Anytown, USA",
+    }),
+    createUser({
+      username: "user2",
+      password: "password123",
+      name: "Jane Smith",
+      mailing_address: "456 Oak Ave, Somewhere, USA",
+      is_admin: true,
+    }),
+    createUser({
+      username: "user3",
+      password: "password123",
+      name: "Bob Johnson",
+      mailing_address: "789 Pine Rd, Nowhere, USA",
+    }),
+    createUser({
+      username: "user4",
+      password: "password123",
+      name: "Alice Williams",
+      mailing_address: "321 Elm St, Everywhere, USA",
+    }),
+    createUser({
+      username: "user5",
+      password: "password123",
+      name: "Charlie Brown",
+      mailing_address: "654 Maple Dr, Anywhere, USA",
+    }),
+    createUser({
+      username: "user6",
+      password: "password123",
+      name: "Diana Ross",
+      mailing_address: "987 Cedar Ln, Elsewhere, USA",
+    }),
+    createUser({
+      username: "user7",
+      password: "password123",
+      name: "Edward Davis",
+      mailing_address: "147 Birch Ct, Someplace, USA",
+    }),
+    createUser({
+      username: "user8",
+      password: "password123",
+      name: "Fiona Green",
+      mailing_address: "258 Willow Way, Otherplace, USA",
+    }),
+    createUser({
+      username: "user9",
+      password: "password123",
+      name: "George Wilson",
+      mailing_address: "369 Spruce St, Noplace, USA",
+    }),
+    createUser({
+      username: "user10",
+      password: "password123",
+      name: "Helen Taylor",
+      mailing_address: "741 Aspen Ave, Anyplace, USA",
+    }),
   ]);
 
   console.log("Users created:");

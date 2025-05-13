@@ -75,14 +75,22 @@ const signToken = async (user_id) => {
   return jwt.sign({ id: user_id }, JWT);
 };
 
-const createUser = async (username, password, name, mailing_address) => {
-  const SQL = `INSERT INTO users (id, username, password, name, mailing_address) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+const createUser = async ({
+  username,
+  password,
+  name,
+  mailing_address,
+  is_admin = false,
+}) => {
+  console.log(username, password);
+  const SQL = `INSERT INTO users (id, username, password, name, mailing_address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
   const response = await client.query(SQL, [
     uuid.v4(),
     username,
     await bcrypt.hash(password, 10),
     name,
     mailing_address,
+    is_admin,
   ]);
   return response.rows[0];
 };

@@ -126,9 +126,9 @@ server.get("/api/users", isLoggedIn, async (req, res, next) => {
   }
 });
 
-server.get("/api/user_cart/:user_id", isLoggedIn, async (req, res, next) => {
+server.get("/api/user_cart/", isLoggedIn, async (req, res, next) => {
   try {
-    const userCart = await fetchUserCart(req.params.user_id);
+    const userCart = await fetchUserCart(req.user.user_id);
     res.send(userCart);
   } catch (error) {
     next(error);
