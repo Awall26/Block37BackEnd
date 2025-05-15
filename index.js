@@ -21,6 +21,7 @@ const {
   findUserWithToken,
   authenticate,
   signToken,
+  clearCart,
 } = require("./db");
 
 const server = express();
@@ -264,6 +265,15 @@ server.delete(
     }
   }
 );
+
+server.delete("/api/user_cart", isLoggedIn, async (req, res, next) => {
+  try {
+    await clearCart(req.user.id);
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Error handling middleware
 server.use((error, req, res, next) => {

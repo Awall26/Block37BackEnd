@@ -168,6 +168,11 @@ const fetchUserCart = async (user_id) => {
   return response.rows;
 };
 
+const clearCart = async (user_id) => {
+  const SQL = `DELETE FROM user_carts WHERE user_id = $1`;
+  await client.query(SQL, [user_id]);
+};
+
 module.exports = {
   client,
   createUser,
@@ -186,4 +191,5 @@ module.exports = {
   findUserWithToken,
   authenticate,
   signToken,
+  clearCart,
 };
