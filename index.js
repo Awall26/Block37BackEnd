@@ -66,6 +66,22 @@ const isLoggedIn = async (req, res, next) => {
   }
 };
 
+const isAdmin = async (req, res, next) => {
+  try {
+    const user = await findUserWithToken(req.headers.authorization);
+    if (!user || !user.is_admin) {
+      next({
+        name: "Unauthorized",
+        message: "You must be an admin to do that",
+      });
+      return;
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 server.get("/api/products", async (req, res, next) => {
   try {
     const products = await fetchProducts();
@@ -117,7 +133,7 @@ server.post("/api/login", async (req, res, next) => {
   }
 });
 
-server.get("/api/users", isLoggedIn, async (req, res, next) => {
+server.get("/api/users", isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     const users = await fetchUsers();
     res.send(users);
@@ -126,74 +142,108 @@ server.get("/api/users", isLoggedIn, async (req, res, next) => {
   }
 });
 
-server.get("/api/user_cart/", isLoggedIn, async (req, res, next) => {
+server.get("/api/user_cart", isLoggedIn, async (req, res, next) => {
   try {
-    const userCart = await fetchUserCart(req.user.user_id);
+    const userCart = await fetchUserCart(req.user.id);
     res.send(userCart);
   } catch (error) {
     next(error);
   }
 });
 
-server.get("/api/user/:user_id", isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await fetchSingleUser(req.params.user_id);
-    res.send(user);
-  } catch (error) {
-    next(error);
-  }
-});
-
-server.post("/api/user_cart/:user_id", isLoggedIn, async (req, res, next) => {
-  try {
-    const userCart = await addToCart(req.params.user_id, req.body.product_id);
-    res.send(userCart);
-  } catch (error) {
-    next(error);
-  }
-});
-
-server.post("/api/products", isLoggedIn, async (req, res, next) => {
-  try {
-    const product = await createProduct(req.body);
-    res.send(product);
-  } catch (error) {
-    next(error);
-  }
-});
-
-server.put(
-  "/api/user_cart/:user_id/:product_id",
+server.get(
+  "/api/user/:user_id",
   isLoggedIn,
+  isAdmin,
   async (req, res, next) => {
     try {
-      const userCart = await changeQuantity(
-        req.params.user_id,
-        req.params.product_id,
-        req.body.quantity
-      );
-      res.send(userCart);
+      const user = await fetchSingleUser(req.params.user_id);
+      res.send(user);
     } catch (error) {
       next(error);
     }
   }
 );
 
-server.put("/api/products/:product_id", isLoggedIn, async (req, res, next) => {
+server.post("/api/user_cart", isLoggedIn, async (req, res, next) => {
   try {
-    const product = await editProduct(req.params.product_id, req.body);
+    const userCart = await addToCart(
+      req.user.id,
+      req.body.product_id,
+      req.body.quantity || 1
+    );
+    res.send(userCart);
+  } catch (error) {
+    next(error);
+  }
+});
+
+server.post("/api/products", isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    const { name, description, img_url, price } = req.body;
+    if (!name || !description || !img_url || !price) {
+      next({
+        name: "Error",
+        message:
+          "Please provide all required fields: name, description, img_url, and price",
+      });
+      return;
+    }
+    const product = await createProduct(name, description, img_url, price);
     res.send(product);
   } catch (error) {
     next(error);
   }
 });
 
+server.put("/api/user_cart/:product_id", isLoggedIn, async (req, res, next) => {
+  try {
+    const userCart = await changeQuantity(
+      req.user.id,
+      req.params.product_id,
+      req.body.quantity
+    );
+    res.send(userCart);
+  } catch (error) {
+    next(error);
+  }
+});
+
+server.put(
+  "/api/products/:product_id",
+  isLoggedIn,
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const { name, description, img_url, price } = req.body;
+      if (!name || !description || !img_url || !price) {
+        next({
+          name: "Error",
+          message:
+            "Please provide all required fields: name, description, img_url, and price",
+        });
+        return;
+      }
+      const product = await editProduct(
+        req.params.product_id,
+        name,
+        description,
+        img_url,
+        price
+      );
+      res.send(product);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 server.delete(
-  "/api/user_cart/:user_id/:product_id",
+  "/api/user_cart/:product_id",
   isLoggedIn,
   async (req, res, next) => {
     try {
-      await removeFromCart(req.params.user_id, req.params.product_id);
+      await removeFromCart(req.user.id, req.params.product_id);
       res.sendStatus(204);
     } catch (error) {
       next(error);
@@ -204,6 +254,7 @@ server.delete(
 server.delete(
   "/api/products/:product_id",
   isLoggedIn,
+  isAdmin,
   async (req, res, next) => {
     try {
       await deleteProduct(req.params.product_id);
@@ -213,3 +264,12 @@ server.delete(
     }
   }
 );
+
+// Error handling middleware
+server.use((error, req, res, next) => {
+  console.error(error);
+  res.status(error.status || 500).send({
+    name: error.name || "Error",
+    message: error.message || "Internal server error",
+  });
+});

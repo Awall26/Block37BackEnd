@@ -49,7 +49,7 @@ const createTables = async () => {
 
 const authenticate = async ({ username, password }) => {
   const SQL = `
-      SELECT id, password FROM users WHERE username=$1;
+      SELECT * FROM users WHERE username=$1;
     `;
   const response = await client.query(SQL, [username]);
   if (
@@ -59,7 +59,7 @@ const authenticate = async ({ username, password }) => {
     return null;
   }
   const token = await jwt.sign({ id: response.rows[0].id }, JWT);
-  return { token, user_id: response.rows[0].id };
+  return { token, user: response.rows[0] };
 };
 
 const findUserWithToken = async (token) => {
@@ -108,14 +108,14 @@ const createProduct = async (name, description, img_url, price) => {
 };
 
 const addToCart = async (user_id, product_id, quantity) => {
-  const SQL = `INSERT INTO user_carts (id, user_id, product_id, quantity) VALUES ($1, $2, $3, $4) RETURNING *`;
-  const response = await client.query(SQL, [
-    uuid.v4(),
-    user_id,
-    product_id,
-    quantity,
-  ]);
-  return response.rows[0];
+  try {
+    const SQL = `INSERT INTO user_carts (id, user_id, product_id, quantity) 
+                 VALUES ($1, $2, $3, $4)`;
+    await client.query(SQL, [uuid.v4(), user_id, product_id, quantity]);
+  } catch (error) {
+    console.error("Error in addToCart:", error);
+    throw error;
+  }
 };
 
 const changeQuantity = async (user_id, product_id, quantity) => {
