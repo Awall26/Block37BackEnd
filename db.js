@@ -4,10 +4,17 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const JWT = process.env.JWT || "keep it secret";
 
-const client = new pg.Client(
+const connectionString =
   process.env.DATABASE_URL ||
-    "postgres://postgres@localhost/acme_backend_store_db"
-);
+  "postgres://postgres@localhost/acme_backend_store_db";
+
+const client = new pg.Client({
+  connectionString,
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : undefined,
+});
 
 const createTables = async () => {
   SQL = `
