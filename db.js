@@ -11,7 +11,7 @@ const connectionString =
 const client = new pg.Client({
   connectionString,
   ssl:
-    process.env.NODE_ENV === "production"
+    process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
       ? { rejectUnauthorized: false }
       : undefined,
 });
